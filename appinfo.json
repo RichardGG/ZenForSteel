@@ -1,0 +1,36 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "RichardG",
+    "longName": "Zen for Steel",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/background.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
+            },
+            {
+                "file": "fonts/Raleway Thin.ttf",
+                "name": "FONT_RALEWAY_21",
+                "type": "font"
+            }
+        ]
+    },
+    "shortName": "Zen for Steel",
+    "uuid": "0959ca75-8e07-4600-8129-9ad4d06d88fe",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
