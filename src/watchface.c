@@ -108,7 +108,7 @@ void init()
 	layer_set_update_proc(layer, update_layer);
 	layer_add_child(window_layer, layer);	
 	
-	//subscribe to seconds tick event
+	//subscribe to tick event
 	#if SHOW_SECOND_HAND==1
 		tick_timer_service_subscribe(SECOND_UNIT, (TickHandler) tick);
 	#else
