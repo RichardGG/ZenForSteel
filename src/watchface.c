@@ -110,6 +110,7 @@ void deinit()
 {
 	layer_destroy(layer);
 	fonts_unload_custom_font(raleway_font);
+	gbitmap_destroy(background);
 	window_destroy(window);
 }
 
