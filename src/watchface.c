@@ -1,5 +1,7 @@
 #include <pebble.h>
 
+#define SHOW_SECOND_HAND 1
+
 //WINDOW
 Window* window;
 //LAYER
@@ -18,7 +20,7 @@ void update_layer(Layer *me, GContext* ctx)
 	
 	//get tick_time
 	time_t temp = time(NULL); 
-  	struct tm *tick_time = localtime(&temp);
+	struct tm *tick_time = localtime(&temp);
 	
 	//get weekday
 	strftime(text, 10, "%A", tick_time);
@@ -30,19 +32,24 @@ void update_layer(Layer *me, GContext* ctx)
 	
 	//draw hands
 	GPoint center = GPoint(71,99);
-	int16_t secondHandLength = 64;
 	int16_t minuteHandLength = 54;
 	int16_t hourHandLength = 34;
-	GPoint secondHand;
 	GPoint minuteHand;
 	GPoint hourHand;
+
+	#if SHOW_SECOND_HAND==1
+		int16_t secondHandLength = 64;
+		GPoint secondHand;
+	#endif
 	
 	graphics_context_set_stroke_color(ctx,GColorWhite);
 
-	int32_t second_angle = TRIG_MAX_ANGLE * tick_time->tm_sec / 60;
-	secondHand.y = (int16_t)(-cos_lookup(second_angle) * (int32_t)secondHandLength / TRIG_MAX_RATIO) + center.y;
-	secondHand.x = (int16_t)(sin_lookup(second_angle) * (int32_t)secondHandLength / TRIG_MAX_RATIO) + center.x;
-	graphics_draw_line(ctx, center, secondHand);
+	#if SHOW_SECOND_HAND==1
+		int32_t second_angle = TRIG_MAX_ANGLE * tick_time->tm_sec / 60;
+		secondHand.y = (int16_t)(-cos_lookup(second_angle) * (int32_t)secondHandLength / TRIG_MAX_RATIO) + center.y;
+		secondHand.x = (int16_t)(sin_lookup(second_angle) * (int32_t)secondHandLength / TRIG_MAX_RATIO) + center.x;
+		graphics_draw_line(ctx, center, secondHand);
+	#endif
 	
 	int32_t minute_angle = TRIG_MAX_ANGLE * tick_time->tm_min / 60;
 	minuteHand.y = (int16_t)(-cos_lookup(minute_angle) * (int32_t)minuteHandLength / TRIG_MAX_RATIO) + center.y;
@@ -101,9 +108,12 @@ void init()
 	layer_set_update_proc(layer, update_layer);
 	layer_add_child(window_layer, layer);	
 	
-	//subscribe to seconds tick event
-	tick_timer_service_subscribe(SECOND_UNIT, (TickHandler) tick);
-
+	//subscribe to tick event
+	#if SHOW_SECOND_HAND==1
+		tick_timer_service_subscribe(SECOND_UNIT, (TickHandler) tick);
+	#else
+		tick_timer_service_subscribe(MINUTE_UNIT, (TickHandler) tick);
+	#endif
 }
 
 void deinit() 
