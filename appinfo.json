@@ -1,4 +1,8 @@
 {
+    "appKeys": {},
+    "capabilities": [
+        "configurable"
+    ],
     "companyName": "RichardG",
     "longName": "Zen for Steel",
     "projectType": "native",
@@ -11,14 +15,14 @@
                 "type": "png"
             },
             {
-                "file": "images/background.png",
-                "name": "IMAGE_BACKGROUND",
-                "type": "png"
-            },
-            {
                 "file": "fonts/Raleway Thin.ttf",
                 "name": "FONT_RALEWAY_21",
                 "type": "font"
+            },
+            {
+                "file": "images/background.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
             }
         ]
     },
