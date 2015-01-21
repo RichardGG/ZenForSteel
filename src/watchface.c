@@ -20,14 +20,15 @@ void update_layer(Layer *me, GContext* ctx)
 	
 	char text[10];
 	
+	graphics_context_set_stroke_color(ctx,GColorWhite);
+	graphics_context_set_text_color(ctx, GColorWhite);
+	
 	//draw background
 	graphics_draw_bitmap_in_rect(ctx,background,GRect(0,0,144,168));
 	
 	//get tick_time
 	time_t temp = time(NULL); 
   	struct tm *tick_time = localtime(&temp);
-	
-	graphics_context_set_text_color(ctx, GColorWhite);
 	
 	//get weekday
 	strftime(text, 10, "%A", tick_time);
@@ -36,6 +37,12 @@ void update_layer(Layer *me, GContext* ctx)
 	
 	if(weekday == 1)
 		graphics_draw_text(ctx, text,  raleway_font, GRect(0,-6,144,100), GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
+	
+	//dumb friday fix
+	if(text[0] == 'f'){
+		graphics_draw_pixel(ctx, GPoint(49,0));
+		graphics_draw_pixel(ctx, GPoint(50,0));
+	}
 	
 	strftime(text, 10, "%d", tick_time);
 	
@@ -47,7 +54,7 @@ void update_layer(Layer *me, GContext* ctx)
 	text[0] += 32;
 	
 	if(month == 1)
-		graphics_draw_text(ctx, text,  fonts_get_system_font(FONT_KEY_GOTHIC_14), GRect(0,113,144,100), GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
+		graphics_draw_text(ctx, text,  fonts_get_system_font(FONT_KEY_GOTHIC_14), GRect(0,114,144,100), GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
 	
 	//draw hands
 	GPoint center = GPoint(71,99);
@@ -58,7 +65,7 @@ void update_layer(Layer *me, GContext* ctx)
 	GPoint minuteHand;
 	GPoint hourHand;
 	
-	graphics_context_set_stroke_color(ctx,GColorWhite);
+	
 
 	int32_t second_angle = TRIG_MAX_ANGLE * tick_time->tm_sec / 60;
 	secondHand.y = (int16_t)(-cos_lookup(second_angle) * (int32_t)secondHandLength / TRIG_MAX_RATIO) + center.y;
@@ -152,7 +159,7 @@ void init()
 	background = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
 	
 	//load font
-	raleway_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_RALEWAY_21));
+	raleway_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_RALEWAY_22));
 	
 	//create layer
 	layer = layer_create(GRect(0,0,144,168));
